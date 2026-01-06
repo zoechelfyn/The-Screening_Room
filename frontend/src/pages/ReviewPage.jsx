@@ -199,7 +199,7 @@ const ReviewPage = () => {
         versionId: selectedVersionId,
         body: data.body,
         anchor: data.anchor,
-        author: { name: 'You', role: 'internal' }
+        author: { name: 'Mohawk Media', role: 'internal' }
       });
       
       const transformed = transformComment(newComment);
@@ -229,6 +229,79 @@ const ReviewPage = () => {
   const handleToggleCompareMode = useCallback(() => {
     setCompareMode(prev => !prev);
   }, []);
+
+  // Project CRUD handlers
+  const handleProjectCreate = async (data) => {
+    try {
+      const newProject = await projectsApi.create(data);
+      const transformed = transformProject(newProject);
+      setProjects(prev => [transformed, ...prev]);
+      setSelectedProjectId(transformed.id);
+      return transformed;
+    } catch (err) {
+      console.error('Failed to create project:', err);
+      throw err;
+    }
+  };
+
+  const handleProjectUpdate = async (projectId, data) => {
+    try {
+      const updated = await projectsApi.update(projectId, data);
+      const transformed = transformProject(updated);
+      setProjects(prev => prev.map(p => p.id === projectId ? transformed : p));
+    } catch (err) {
+      console.error('Failed to update project:', err);
+      throw err;
+    }
+  };
+
+  const handleProjectDelete = async (projectId) => {
+    try {
+      await projectsApi.delete(projectId);
+      setProjects(prev => prev.filter(p => p.id !== projectId));
+      // Select next project or null
+      const remaining = projects.filter(p => p.id !== projectId);
+      if (remaining.length > 0) {
+        setSelectedProjectId(remaining[0].id);
+      } else {
+        setSelectedProjectId(null);
+        setSelectedAssetId(null);
+      }
+    } catch (err) {
+      console.error('Failed to delete project:', err);
+      throw err;
+    }
+  };
+
+  // Asset CRUD handlers
+  const handleAssetCreate = async (projectId, data) => {
+    try {
+      const newAsset = await assetsApi.create(projectId, data);
+      const transformed = transformAsset(newAsset);
+      setAssets(prev => [transformed, ...prev]);
+      setSelectedAssetId(transformed.id);
+      
+      // If media URL provided, create initial version
+      if (data.mediaUrl) {
+        const mediaKind = data.type;
+        const versionData = {
+          label: 'v1',
+          media: {
+            kind: mediaKind,
+            url: data.mediaUrl,
+            ...(mediaKind === 'video' ? { durationMs: null } : { width: null, height: null })
+          }
+        };
+        await versionsApi.create(transformed.id, versionData);
+        await loadVersions(transformed.id);
+      }
+      
+      return transformed;
+    } catch (err) {
+      console.error('Failed to create asset:', err);
+      throw err;
+    }
+  };
 
   const handleSeedDatabase = async () => {
     try {
