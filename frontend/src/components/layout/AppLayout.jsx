@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { FolderOpen, Film, Image, ChevronRight, Plus, Settings, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { AddProjectModal, AddAssetModal, ProjectSettingsModal } from '@/components/modals';
 
 const LOGO_URL = 'https://customer-assets.emergentagent.com/job_0e9ae12c-37f6-45b0-9294-867981caa4b0/artifacts/qfz62m16_zoechelfyn_logo.png';
 
@@ -19,10 +20,44 @@ const AppLayout = ({
   selectedAssetId, 
   onProjectSelect, 
   onAssetSelect,
+  onProjectCreate,
+  onProjectUpdate,
+  onProjectDelete,
+  onAssetCreate,
   children 
 }) => {
+  const [showAddProjectModal, setShowAddProjectModal] = useState(false);
+  const [showAddAssetModal, setShowAddAssetModal] = useState(false);
+  const [showProjectSettingsModal, setShowProjectSettingsModal] = useState(false);
+
   const selectedProject = projects.find(p => p.id === selectedProjectId);
   const projectAssets = assets.filter(a => a.projectId === selectedProjectId);
+
+  const handleCreateProject = async (data) => {
+    if (onProjectCreate) {
+      const newProject = await onProjectCreate(data);
+      return newProject;
+    }
+  };
+
+  const handleUpdateProject = async (projectId, data) => {
+    if (onProjectUpdate) {
+      await onProjectUpdate(projectId, data);
+    }
+  };
+
+  const handleDeleteProject = async (projectId) => {
+    if (onProjectDelete) {
+      await onProjectDelete(projectId);
+    }
+  };
+
+  const handleCreateAsset = async (data) => {
+    if (onAssetCreate && selectedProjectId) {
+      const newAsset = await onAssetCreate(selectedProjectId, data);
+      return newAsset;
+    }
+  };
 
   return (
     <div className="h-screen flex bg-surface text-content overflow-hidden">
@@ -47,7 +82,12 @@ const AppLayout = ({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover"
+                    onClick={() => setShowAddProjectModal(true)}
+                  >
                     <Plus className="w-4 h-4" />
                   </Button>
                 </TooltipTrigger>
@@ -90,7 +130,12 @@ const AppLayout = ({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover"
+                        onClick={() => setShowAddAssetModal(true)}
+                      >
                         <Plus className="w-4 h-4" />
                       </Button>
                     </TooltipTrigger>
@@ -140,9 +185,18 @@ const AppLayout = ({
 
         {/* Bottom actions */}
         <div className="border-t border-white/10 p-3 space-y-1">
-          <button className="w-full px-3 py-2 rounded-lg text-left text-content-secondary hover:bg-surface-hover hover:text-content transition-colors flex items-center gap-2 text-sm">
+          <button 
+            onClick={() => selectedProject && setShowProjectSettingsModal(true)}
+            disabled={!selectedProject}
+            className={cn(
+              "w-full px-3 py-2 rounded-lg text-left transition-colors flex items-center gap-2 text-sm",
+              selectedProject 
+                ? "text-content-secondary hover:bg-surface-hover hover:text-content"
+                : "text-content-muted cursor-not-allowed"
+            )}
+          >
             <Settings className="w-4 h-4" />
-            Settings
+            Project Settings
           </button>
           <button className="w-full px-3 py-2 rounded-lg text-left text-content-secondary hover:bg-surface-hover hover:text-content transition-colors flex items-center gap-2 text-sm">
             <HelpCircle className="w-4 h-4" />
@@ -155,6 +209,28 @@ const AppLayout = ({
       <main className="flex-1 flex flex-col overflow-hidden">
         {children}
       </main>
+
+      {/* Modals */}
+      <AddProjectModal
+        open={showAddProjectModal}
+        onOpenChange={setShowAddProjectModal}
+        onSubmit={handleCreateProject}
+      />
+
+      <AddAssetModal
+        open={showAddAssetModal}
+        onOpenChange={setShowAddAssetModal}
+        onSubmit={handleCreateAsset}
+        projectName={selectedProject?.name}
+      />
+
+      <ProjectSettingsModal
+        open={showProjectSettingsModal}
+        onOpenChange={setShowProjectSettingsModal}
+        project={selectedProject}
+        onUpdate={handleUpdateProject}
+        onDelete={handleDeleteProject}
+      />
     </div>
   );
 };
