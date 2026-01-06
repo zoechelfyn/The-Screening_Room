@@ -400,7 +400,7 @@ const VideoPlayer = ({
               <SelectTrigger className="w-20 h-8 bg-transparent border-white/20 text-white text-sm">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a1a1c] border-white/10">
+              <SelectContent className="bg-surface-overlay border-white/10">
                 <SelectItem value="0.5">0.5x</SelectItem>
                 <SelectItem value="0.75">0.75x</SelectItem>
                 <SelectItem value="1">1x</SelectItem>
