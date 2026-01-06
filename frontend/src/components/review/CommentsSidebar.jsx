@@ -151,13 +151,13 @@ const CommentsSidebar = ({
   });
 
   return (
-    <aside className="w-96 border-l border-white/10 flex flex-col bg-[#111113]">
+    <aside className="w-96 border-l border-white/10 flex flex-col bg-surface-elevated">
       {/* Header */}
       <div className="h-14 px-4 flex items-center justify-between border-b border-white/10">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-violet-400" />
-          <span className="font-medium">Comments</span>
-          <Badge variant="secondary" className="bg-white/10 text-white/80">
+          <MessageSquare className="w-5 h-5 text-brand-purple" />
+          <span className="font-medium text-content">Comments</span>
+          <Badge variant="secondary" className="bg-white/10 text-content-secondary">
             {comments.length}
           </Badge>
         </div>
@@ -165,10 +165,10 @@ const CommentsSidebar = ({
         {/* Version selector */}
         {versions && versions.length > 0 && (
           <Select value={version?.id} onValueChange={onVersionChange}>
-            <SelectTrigger className="w-24 h-8 bg-transparent border-white/20 text-white text-sm">
+            <SelectTrigger className="w-24 h-8 bg-transparent border-white/20 text-content text-sm">
               <SelectValue placeholder="Version" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1c] border-white/10">
+            <SelectContent className="bg-surface-overlay border-white/10">
               {versions.map(v => (
                 <SelectItem key={v.id} value={v.id}>
                   {v.label}
@@ -181,15 +181,15 @@ const CommentsSidebar = ({
 
       {/* New comment input (when adding) */}
       {newCommentAnchor && (
-        <div className="p-4 border-b border-white/10 bg-violet-500/10">
+        <div className="p-4 border-b border-white/10 bg-brand-purple/10">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-violet-300">
+            <span className="text-sm text-brand-purple-light">
               New comment at {getAnchorLabel(newCommentAnchor)}
             </span>
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 text-white/50 hover:text-white"
+              className="h-6 w-6 text-content-muted hover:text-content"
               onClick={onClearNewComment}
             >
               <X className="w-4 h-4" />
@@ -200,7 +200,7 @@ const CommentsSidebar = ({
             placeholder="Add your comment..."
             value={newCommentText}
             onChange={(e) => setNewCommentText(e.target.value)}
-            className="bg-white/5 border-white/10 text-white placeholder:text-white/40 min-h-[80px] resize-none"
+            className="bg-surface-hover border-white/10 text-content placeholder:text-content-muted min-h-[80px] resize-none"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 handleSubmitNewComment();
