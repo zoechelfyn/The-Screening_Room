@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { formatTime } from '@/data/mock';
+import { formatTime } from '@/services/api';
 
 const VideoPlayer = ({ 
   version,
