@@ -258,7 +258,7 @@ const VideoPlayer = ({
           {/* Progress track */}
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-1 bg-white/20 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-violet-500 rounded-full transition-all duration-100"
+              className="h-full bg-brand-orange rounded-full transition-all duration-100"
               style={{ width: `${(currentTime / videoDuration) * 100}%` }}
             />
           </div>
