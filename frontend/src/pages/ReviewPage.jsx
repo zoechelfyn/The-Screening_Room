@@ -335,6 +335,10 @@ const ReviewPage = () => {
       selectedAssetId={selectedAssetId}
       onProjectSelect={setSelectedProjectId}
       onAssetSelect={setSelectedAssetId}
+      onProjectCreate={handleProjectCreate}
+      onProjectUpdate={handleProjectUpdate}
+      onProjectDelete={handleProjectDelete}
+      onAssetCreate={handleAssetCreate}
     >
       {selectedAsset ? (
         <div className="flex-1 flex flex-col overflow-hidden">
