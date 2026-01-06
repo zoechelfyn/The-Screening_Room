@@ -128,7 +128,7 @@ const CommentsSidebar = ({
       try {
         const newReply = await repliesApi.create(commentId, {
           body: text.trim(),
-          author: { name: 'You', role: 'internal' }
+          author: { name: 'Mohawk Media', role: 'internal' }
         });
         const transformed = transformReply(newReply);
         setCommentReplies(prev => ({
