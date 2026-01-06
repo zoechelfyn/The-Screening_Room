@@ -232,7 +232,7 @@ const CommentsSidebar = ({
             </div>
           ) : (
             sortedComments.map((comment) => {
-              const replies = getRepliesByCommentId(comment.id);
+              const replies = commentReplies[comment.id] || [];
               const isExpanded = expandedComments[comment.id];
               const isHighlighted = comment.id === highlightedCommentId;
 
