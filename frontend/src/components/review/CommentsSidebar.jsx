@@ -403,19 +403,25 @@ const CommentsSidebar = ({
                       {replies.map((reply) => (
                         <div key={reply.id} className="flex gap-3 pl-6">
                           <Avatar className="h-6 w-6 flex-shrink-0">
+                            {isInternalAuthor(reply.author) ? (
+                              <AvatarImage src={LOGO_URL} alt="Mohawk Media" className="object-cover" />
+                            ) : null}
                             <AvatarFallback className={cn(
                               'text-[10px] font-medium',
-                              reply.author.role === 'client' 
+                              isInternalAuthor(reply.author)
                                 ? 'bg-brand-orange/20 text-brand-orange' 
-                                : 'bg-brand-purple/20 text-brand-purple-light'
+                                : 'bg-surface-hover text-content-muted'
                             )}>
-                              {getInitials(reply.author.name)}
+                              {isInternalAuthor(reply.author) ? 'MM' : <User className="w-3 h-3" />}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-xs text-content">
-                                {reply.author.name}
+                              <span className={cn(
+                                "font-medium text-xs",
+                                isInternalAuthor(reply.author) ? "text-brand-orange" : "text-content"
+                              )}>
+                                {getDisplayName(reply.author)}
                               </span>
                               <span className="text-[10px] text-content-muted">
                                 {formatDate(reply.createdAt)}
