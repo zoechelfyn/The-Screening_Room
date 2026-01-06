@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -24,6 +24,21 @@ import {
 } from '@/components/ui/select';
 import { formatTime, formatDate } from '@/services/api';
 import { repliesApi, transformReply } from '@/services/api';
+
+const LOGO_URL = 'https://customer-assets.emergentagent.com/job_0e9ae12c-37f6-45b0-9294-867981caa4b0/artifacts/qfz62m16_zoechelfyn_logo.png';
+
+// Helper to check if author is internal (Mohawk Media)
+const isInternalAuthor = (author) => {
+  return author.role === 'internal' || author.name === 'Mohawk Media' || author.name === 'You';
+};
+
+// Get display name - show "Mohawk Media" for internal users
+const getDisplayName = (author) => {
+  if (isInternalAuthor(author)) {
+    return 'Mohawk Media';
+  }
+  return author.name;
+};
 
 const CommentsSidebar = ({
   asset,
