@@ -28,6 +28,11 @@ export const projectsApi = {
     return response.data;
   },
   
+  update: async (projectId, data) => {
+    const response = await apiClient.patch(`/projects/${projectId}`, data);
+    return response.data;
+  },
+  
   delete: async (projectId) => {
     await apiClient.delete(`/projects/${projectId}`);
   },
