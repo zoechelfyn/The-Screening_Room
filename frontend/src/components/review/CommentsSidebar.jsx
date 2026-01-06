@@ -274,26 +274,26 @@ const CommentsSidebar = ({
                             className={cn(
                               'text-[10px] px-1.5 py-0 h-4',
                               comment.author.role === 'client'
-                                ? 'border-amber-500/30 text-amber-400'
-                                : 'border-blue-500/30 text-blue-400'
+                                ? 'border-brand-orange/30 text-brand-orange'
+                                : 'border-brand-purple/30 text-brand-purple-light'
                             )}
                           >
                             {comment.author.role}
                           </Badge>
                           {comment.status === 'resolved' && (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <CheckCircle2 className="w-4 h-4 text-status-success" />
                           )}
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs text-white/50 mb-2">
+                        <div className="flex items-center gap-2 text-xs text-content-muted mb-2">
                           <Clock className="w-3 h-3" />
                           <span>{formatDate(comment.createdAt)}</span>
-                          <span className="text-violet-400 font-mono">
+                          <span className="text-brand-purple-light font-mono">
                             {getAnchorLabel(comment.anchor)}
                           </span>
                         </div>
 
-                        <p className="text-sm text-white/80 leading-relaxed">
+                        <p className="text-sm text-content-secondary leading-relaxed">
                           {comment.body}
                         </p>
                       </div>
@@ -306,7 +306,7 @@ const CommentsSidebar = ({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 text-xs text-white/50 hover:text-white hover:bg-white/10"
+                        className="h-7 text-xs text-content-muted hover:text-content hover:bg-surface-hover"
                         onClick={() => toggleReplyInput(comment.id)}
                       >
                         Reply
@@ -316,7 +316,7 @@ const CommentsSidebar = ({
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 text-xs text-white/50 hover:text-white hover:bg-white/10 gap-1"
+                          className="h-7 text-xs text-content-muted hover:text-content hover:bg-surface-hover gap-1"
                           onClick={() => toggleExpand(comment.id)}
                         >
                           {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
@@ -336,8 +336,8 @@ const CommentsSidebar = ({
                         className={cn(
                           'h-7 w-7',
                           comment.status === 'resolved'
-                            ? 'text-emerald-400 hover:text-emerald-300'
-                            : 'text-white/50 hover:text-emerald-400'
+                            ? 'text-status-success hover:text-status-success'
+                            : 'text-content-muted hover:text-status-success'
                         )}
                         onClick={() => onResolveComment && onResolveComment(comment.id)}
                       >
