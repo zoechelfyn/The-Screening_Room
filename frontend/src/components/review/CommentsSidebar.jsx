@@ -22,7 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { formatTime, formatDate, getRepliesByCommentId } from '@/data/mock';
+import { formatTime, formatDate } from '@/services/api';
+import { repliesApi, transformReply } from '@/services/api';
 
 const CommentsSidebar = ({
   asset,
