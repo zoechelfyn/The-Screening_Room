@@ -353,21 +353,21 @@ const CommentsSidebar = ({
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 text-white/50 hover:text-white"
+                            className="h-7 w-7 text-content-muted hover:text-content"
                           >
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-[#1a1a1c] border-white/10">
-                          <DropdownMenuItem className="text-white/80 hover:text-white focus:text-white focus:bg-white/10">
+                        <DropdownMenuContent className="bg-surface-overlay border-white/10">
+                          <DropdownMenuItem className="text-content-secondary hover:text-content focus:text-content focus:bg-surface-hover">
                             <Pencil className="w-4 h-4 mr-2" />
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-white/80 hover:text-white focus:text-white focus:bg-white/10">
+                          <DropdownMenuItem className="text-content-secondary hover:text-content focus:text-content focus:bg-surface-hover">
                             <Flag className="w-4 h-4 mr-2" />
                             Flag
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-400 hover:text-red-300 focus:text-red-300 focus:bg-red-500/10">
+                          <DropdownMenuItem className="text-status-error hover:text-status-error focus:text-status-error focus:bg-status-error/10">
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete
                           </DropdownMenuItem>
@@ -378,29 +378,29 @@ const CommentsSidebar = ({
 
                   {/* Replies */}
                   {isExpanded && replies.length > 0 && (
-                    <div className="border-t border-white/10 px-3 py-3 space-y-3 bg-black/20">
+                    <div className="border-t border-white/10 px-3 py-3 space-y-3 bg-surface/50">
                       {replies.map((reply) => (
                         <div key={reply.id} className="flex gap-3 pl-6">
                           <Avatar className="h-6 w-6 flex-shrink-0">
                             <AvatarFallback className={cn(
                               'text-[10px] font-medium',
                               reply.author.role === 'client' 
-                                ? 'bg-amber-500/20 text-amber-300' 
-                                : 'bg-blue-500/20 text-blue-300'
+                                ? 'bg-brand-orange/20 text-brand-orange' 
+                                : 'bg-brand-purple/20 text-brand-purple-light'
                             )}>
                               {getInitials(reply.author.name)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-xs text-white">
+                              <span className="font-medium text-xs text-content">
                                 {reply.author.name}
                               </span>
-                              <span className="text-[10px] text-white/40">
+                              <span className="text-[10px] text-content-muted">
                                 {formatDate(reply.createdAt)}
                               </span>
                             </div>
-                            <p className="text-xs text-white/70">{reply.body}</p>
+                            <p className="text-xs text-content-secondary">{reply.body}</p>
                           </div>
                         </div>
                       ))}
@@ -409,7 +409,7 @@ const CommentsSidebar = ({
 
                   {/* Reply input */}
                   {showReplyInput[comment.id] && (
-                    <div className="border-t border-white/10 p-3 bg-black/20">
+                    <div className="border-t border-white/10 p-3 bg-surface/50">
                       <Textarea
                         placeholder="Write a reply..."
                         value={replyTexts[comment.id] || ''}
@@ -417,13 +417,13 @@ const CommentsSidebar = ({
                           ...prev,
                           [comment.id]: e.target.value
                         }))}
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/40 min-h-[60px] resize-none text-sm"
+                        className="bg-surface-hover border-white/10 text-content placeholder:text-content-muted min-h-[60px] resize-none text-sm"
                       />
                       <div className="flex justify-end gap-2 mt-2">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-white/50 hover:text-white"
+                          className="text-content-muted hover:text-content"
                           onClick={() => toggleReplyInput(comment.id)}
                         >
                           Cancel
