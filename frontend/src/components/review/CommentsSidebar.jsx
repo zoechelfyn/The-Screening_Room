@@ -430,7 +430,7 @@ const CommentsSidebar = ({
                         </Button>
                         <Button
                           size="sm"
-                          className="bg-violet-500 hover:bg-violet-600 text-white"
+                          className="bg-brand-orange hover:bg-brand-orange-light text-content-inverse"
                           onClick={() => handleSubmitReply(comment.id)}
                           disabled={!replyTexts[comment.id]?.trim()}
                         >
