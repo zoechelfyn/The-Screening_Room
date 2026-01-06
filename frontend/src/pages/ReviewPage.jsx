@@ -362,15 +362,15 @@ const ReviewPage = () => {
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex items-center justify-center bg-[#0a0a0b]">
+        <div className="flex-1 flex items-center justify-center bg-surface">
           <div className="text-center">
-            <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
-              <Film className="w-8 h-8 text-white/30" />
+            <div className="w-16 h-16 rounded-2xl bg-surface-hover flex items-center justify-center mx-auto mb-4">
+              <Film className="w-8 h-8 text-content-muted" />
             </div>
-            <h2 className="text-xl font-medium text-white mb-2">
+            <h2 className="text-xl font-medium text-content mb-2">
               {projects.length === 0 ? 'No projects found' : 'Select an asset to review'}
             </h2>
-            <p className="text-white/50 mb-6">
+            <p className="text-content-secondary mb-6">
               {projects.length === 0 
                 ? 'Seed the database to get started with sample data'
                 : 'Choose a video or image from the sidebar to start reviewing'}
@@ -378,7 +378,7 @@ const ReviewPage = () => {
             {projects.length === 0 && (
               <Button 
                 onClick={handleSeedDatabase}
-                className="bg-violet-500 hover:bg-violet-600 text-white"
+                className="bg-brand-orange hover:bg-brand-orange-light text-content-inverse"
                 disabled={loading}
               >
                 {loading ? (
