@@ -10,6 +10,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+const LOGO_URL = 'https://customer-assets.emergentagent.com/job_0e9ae12c-37f6-45b0-9294-867981caa4b0/artifacts/qfz62m16_zoechelfyn_logo.png';
+
 const AppLayout = ({ 
   projects, 
   assets, 
@@ -23,27 +25,29 @@ const AppLayout = ({
   const projectAssets = assets.filter(a => a.projectId === selectedProjectId);
 
   return (
-    <div className="h-screen flex bg-[#0a0a0b] text-white overflow-hidden">
+    <div className="h-screen flex bg-surface text-content overflow-hidden">
       {/* Left Sidebar - Projects & Assets */}
-      <aside className="w-64 border-r border-white/10 flex flex-col bg-[#111113]">
+      <aside className="w-64 border-r border-white/10 flex flex-col bg-surface-elevated">
         {/* Logo */}
         <div className="h-14 px-4 flex items-center border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
-              <Film className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-semibold text-lg">ReviewStudio</span>
+          <div className="flex items-center gap-3">
+            <img 
+              src={LOGO_URL} 
+              alt="Zoechelfyn" 
+              className="h-9 w-auto"
+            />
+            <span className="font-semibold text-base text-content">The Screening Room</span>
           </div>
         </div>
 
         {/* Projects List */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="px-3 py-3 flex items-center justify-between">
-            <span className="text-xs font-medium text-white/50 uppercase tracking-wider">Projects</span>
+            <span className="text-xs font-medium text-content-muted uppercase tracking-wider">Projects</span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 text-white/50 hover:text-white hover:bg-white/10">
+                  <Button variant="ghost" size="icon" className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover">
                     <Plus className="w-4 h-4" />
                   </Button>
                 </TooltipTrigger>
@@ -64,13 +68,13 @@ const AppLayout = ({
                     'w-full px-3 py-2 rounded-lg text-left transition-all duration-200',
                     'flex items-center gap-2 group',
                     selectedProjectId === project.id 
-                      ? 'bg-white/10 text-white' 
-                      : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      ? 'bg-brand-orange/15 text-content border border-brand-orange/30' 
+                      : 'text-content-secondary hover:bg-surface-hover hover:text-content'
                   )}
                 >
                   <FolderOpen className={cn(
                     'w-4 h-4 flex-shrink-0 transition-colors',
-                    selectedProjectId === project.id ? 'text-violet-400' : 'text-white/40 group-hover:text-white/60'
+                    selectedProjectId === project.id ? 'text-brand-orange' : 'text-content-muted group-hover:text-content-secondary'
                   )} />
                   <span className="truncate text-sm">{project.name}</span>
                 </button>
@@ -82,11 +86,11 @@ const AppLayout = ({
           {selectedProject && (
             <>
               <div className="px-3 py-3 flex items-center justify-between border-t border-white/10">
-                <span className="text-xs font-medium text-white/50 uppercase tracking-wider">Assets</span>
+                <span className="text-xs font-medium text-content-muted uppercase tracking-wider">Assets</span>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-6 w-6 text-white/50 hover:text-white hover:bg-white/10">
+                      <Button variant="ghost" size="icon" className="h-6 w-6 text-content-muted hover:text-content hover:bg-surface-hover">
                         <Plus className="w-4 h-4" />
                       </Button>
                     </TooltipTrigger>
@@ -107,24 +111,24 @@ const AppLayout = ({
                         'w-full px-3 py-2 rounded-lg text-left transition-all duration-200',
                         'flex items-center gap-2 group',
                         selectedAssetId === asset.id 
-                          ? 'bg-violet-500/20 text-white border border-violet-500/30' 
-                          : 'text-white/70 hover:bg-white/5 hover:text-white'
+                          ? 'bg-brand-purple/20 text-content border border-brand-purple/30' 
+                          : 'text-content-secondary hover:bg-surface-hover hover:text-content'
                       )}
                     >
                       {asset.type === 'video' ? (
                         <Film className={cn(
                           'w-4 h-4 flex-shrink-0',
-                          selectedAssetId === asset.id ? 'text-violet-400' : 'text-blue-400/70'
+                          selectedAssetId === asset.id ? 'text-brand-orange' : 'text-brand-orange/70'
                         )} />
                       ) : (
                         <Image className={cn(
                           'w-4 h-4 flex-shrink-0',
-                          selectedAssetId === asset.id ? 'text-violet-400' : 'text-emerald-400/70'
+                          selectedAssetId === asset.id ? 'text-brand-purple' : 'text-brand-purple/70'
                         )} />
                       )}
                       <span className="truncate text-sm">{asset.title}</span>
                       {selectedAssetId === asset.id && (
-                        <ChevronRight className="w-4 h-4 ml-auto text-violet-400" />
+                        <ChevronRight className="w-4 h-4 ml-auto text-brand-purple" />
                       )}
                     </button>
                   ))}
@@ -136,11 +140,11 @@ const AppLayout = ({
 
         {/* Bottom actions */}
         <div className="border-t border-white/10 p-3 space-y-1">
-          <button className="w-full px-3 py-2 rounded-lg text-left text-white/60 hover:bg-white/5 hover:text-white transition-colors flex items-center gap-2 text-sm">
+          <button className="w-full px-3 py-2 rounded-lg text-left text-content-secondary hover:bg-surface-hover hover:text-content transition-colors flex items-center gap-2 text-sm">
             <Settings className="w-4 h-4" />
             Settings
           </button>
-          <button className="w-full px-3 py-2 rounded-lg text-left text-white/60 hover:bg-white/5 hover:text-white transition-colors flex items-center gap-2 text-sm">
+          <button className="w-full px-3 py-2 rounded-lg text-left text-content-secondary hover:bg-surface-hover hover:text-content transition-colors flex items-center gap-2 text-sm">
             <HelpCircle className="w-4 h-4" />
             Help & Support
           </button>
