@@ -210,7 +210,7 @@ const CommentsSidebar = ({
           <div className="flex justify-end mt-2">
             <Button
               size="sm"
-              className="bg-violet-500 hover:bg-violet-600 text-white"
+              className="bg-brand-orange hover:bg-brand-orange-light text-content-inverse"
               onClick={handleSubmitNewComment}
               disabled={!newCommentText.trim()}
             >
@@ -225,7 +225,7 @@ const CommentsSidebar = ({
       <ScrollArea className="flex-1">
         <div className="p-4 space-y-4">
           {sortedComments.length === 0 ? (
-            <div className="text-center py-12 text-white/40">
+            <div className="text-center py-12 text-content-muted">
               <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
               <p>No comments yet</p>
               <p className="text-sm mt-1">Add a marker or pin to start reviewing</p>
@@ -243,8 +243,8 @@ const CommentsSidebar = ({
                   className={cn(
                     'rounded-lg border transition-all duration-300',
                     isHighlighted
-                      ? 'border-violet-500/50 bg-violet-500/10 ring-2 ring-violet-500/20'
-                      : 'border-white/10 bg-white/5 hover:bg-white/[0.07]'
+                      ? 'border-brand-purple/50 bg-brand-purple/10 ring-2 ring-brand-purple/20'
+                      : 'border-white/10 bg-surface-hover/50 hover:bg-surface-hover'
                   )}
                 >
                   {/* Comment header */}
@@ -257,8 +257,8 @@ const CommentsSidebar = ({
                         <AvatarFallback className={cn(
                           'text-xs font-medium',
                           comment.author.role === 'client' 
-                            ? 'bg-amber-500/20 text-amber-300' 
-                            : 'bg-blue-500/20 text-blue-300'
+                            ? 'bg-brand-orange/20 text-brand-orange' 
+                            : 'bg-brand-purple/20 text-brand-purple-light'
                         )}>
                           {getInitials(comment.author.name)}
                         </AvatarFallback>
@@ -266,7 +266,7 @@ const CommentsSidebar = ({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-sm text-white">
+                          <span className="font-medium text-sm text-content">
                             {comment.author.name}
                           </span>
                           <Badge 
