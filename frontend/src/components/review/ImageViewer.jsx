@@ -137,16 +137,16 @@ const ImageViewer = ({
 
   if (!version) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#0d0d0e] text-white/50">
+      <div className="flex-1 flex items-center justify-center bg-surface text-content-muted">
         <p>Select a version to review</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-[#0d0d0e]">
+    <div className="flex-1 flex flex-col bg-surface">
       {/* Toolbar */}
-      <div className="h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#111113]">
+      <div className="h-12 border-b border-white/10 flex items-center justify-between px-4 bg-surface-elevated">
         <div className="flex items-center gap-2">
           {/* Zoom controls */}
           <TooltipProvider>
