@@ -39,6 +39,7 @@ const CommentsSidebar = ({
   onClearNewComment
 }) => {
   const [expandedComments, setExpandedComments] = useState({});
+  const [commentReplies, setCommentReplies] = useState({});
   const [newCommentText, setNewCommentText] = useState('');
   const [replyTexts, setReplyTexts] = useState({});
   const [showReplyInput, setShowReplyInput] = useState({});
@@ -62,10 +63,27 @@ const CommentsSidebar = ({
     }
   }, [newCommentAnchor]);
 
-  const toggleExpand = (commentId) => {
+  // Load replies when expanding a comment
+  const loadReplies = async (commentId) => {
+    if (!commentReplies[commentId]) {
+      try {
+        const data = await repliesApi.list(commentId);
+        const transformed = data.map(transformReply);
+        setCommentReplies(prev => ({ ...prev, [commentId]: transformed }));
+      } catch (err) {
+        console.error('Failed to load replies:', err);
+      }
+    }
+  };
+
+  const toggleExpand = async (commentId) => {
+    const willExpand = !expandedComments[commentId];
+    if (willExpand) {
+      await loadReplies(commentId);
+    }
     setExpandedComments(prev => ({
       ...prev,
-      [commentId]: !prev[commentId]
+      [commentId]: willExpand
     }));
   };
 
@@ -89,13 +107,26 @@ const CommentsSidebar = ({
     }
   };
 
-  const handleSubmitReply = (commentId) => {
+  const handleSubmitReply = async (commentId) => {
     const text = replyTexts[commentId];
     if (text?.trim()) {
-      // In real app, this would call an API
-      console.log('Reply to', commentId, ':', text);
-      setReplyTexts(prev => ({ ...prev, [commentId]: '' }));
-      setShowReplyInput(prev => ({ ...prev, [commentId]: false }));
+      try {
+        const newReply = await repliesApi.create(commentId, {
+          body: text.trim(),
+          author: { name: 'You', role: 'internal' }
+        });
+        const transformed = transformReply(newReply);
+        setCommentReplies(prev => ({
+          ...prev,
+          [commentId]: [...(prev[commentId] || []), transformed]
+        }));
+        setReplyTexts(prev => ({ ...prev, [commentId]: '' }));
+        setShowReplyInput(prev => ({ ...prev, [commentId]: false }));
+        // Auto-expand to show the new reply
+        setExpandedComments(prev => ({ ...prev, [commentId]: true }));
+      } catch (err) {
+        console.error('Failed to create reply:', err);
+      }
     }
   };
 
