@@ -278,9 +278,9 @@ const VideoPlayer = ({
                         'absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full',
                         'transition-all duration-200 z-10',
                         isHighlighted 
-                          ? 'bg-violet-400 scale-150 ring-4 ring-violet-400/30' 
-                          : 'bg-amber-400 hover:scale-125',
-                        comment.status === 'resolved' && !isHighlighted && 'bg-emerald-400'
+                          ? 'bg-brand-purple scale-150 ring-4 ring-brand-purple/30' 
+                          : 'bg-brand-orange hover:scale-125',
+                        comment.status === 'resolved' && !isHighlighted && 'bg-status-success'
                       )}
                       style={{ left: `${position}%` }}
                       onClick={(e) => {
@@ -291,8 +291,8 @@ const VideoPlayer = ({
                       onMouseLeave={() => setHoveredMarker(null)}
                     />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs bg-[#1a1a1c] border-white/10">
-                    <p className="text-xs text-white/60 mb-1">{formatTime(comment.anchor.timeMs)}</p>
+                  <TooltipContent side="top" className="max-w-xs bg-surface-overlay border-white/10">
+                    <p className="text-xs text-content-muted mb-1">{formatTime(comment.anchor.timeMs)}</p>
                     <p className="text-sm line-clamp-2">{comment.body}</p>
                   </TooltipContent>
                 </Tooltip>
