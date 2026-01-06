@@ -59,6 +59,36 @@ async def get_project(project_id: str):
     return serialize_doc(project)
 
 
+@router.patch("/{project_id}", response_model=ProjectResponse)
+async def update_project(project_id: str, project: ProjectCreate):
+    """Update a project's name and/or client name."""
+    db = get_db()
+    
+    try:
+        oid = ObjectId(project_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid project ID format")
+    
+    # Check project exists
+    existing = await db.projects.find_one({"_id": oid})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    # Build update dict
+    update_dict = {}
+    if project.name:
+        update_dict["name"] = project.name
+    if project.client_name is not None:
+        update_dict["client_name"] = project.client_name
+    
+    if update_dict:
+        await db.projects.update_one({"_id": oid}, {"$set": update_dict})
+    
+    # Fetch updated document
+    updated = await db.projects.find_one({"_id": oid})
+    return serialize_doc(updated)
+
+
 @router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_project(project_id: str):
     """Delete a project and all its assets, versions, and comments."""
