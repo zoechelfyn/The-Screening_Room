@@ -258,7 +258,7 @@ const ImageViewer = ({
                   <SelectTrigger className="w-24 h-8 bg-transparent border-white/20 text-content text-sm">
                     <SelectValue placeholder="vs" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a1c] border-white/10">
+                  <SelectContent className="bg-surface-overlay border-white/10">
                     {versions
                       .filter(v => v.id !== version.id)
                       .map(v => (
