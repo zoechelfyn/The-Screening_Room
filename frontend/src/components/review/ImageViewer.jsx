@@ -213,8 +213,8 @@ const ImageViewer = ({
                   className={cn(
                     'gap-2',
                     isAddingPin 
-                      ? 'bg-violet-500/20 text-violet-300 hover:bg-violet-500/30' 
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                      ? 'bg-brand-purple/20 text-brand-purple-light hover:bg-brand-purple/30' 
+                      : 'text-content-secondary hover:text-content hover:bg-surface-hover'
                   )}
                   onClick={() => setIsAddingPin(!isAddingPin)}
                 >
@@ -240,8 +240,8 @@ const ImageViewer = ({
                       className={cn(
                         'gap-2',
                         compareMode 
-                          ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30' 
-                          : 'text-white/70 hover:text-white hover:bg-white/10'
+                          ? 'bg-brand-orange/20 text-brand-orange-light hover:bg-brand-orange/30' 
+                          : 'text-content-secondary hover:text-content hover:bg-surface-hover'
                       )}
                       onClick={onToggleCompareMode}
                     >
@@ -255,7 +255,7 @@ const ImageViewer = ({
 
               {compareMode && (
                 <Select value={compareVersionId} onValueChange={onCompareVersionChange}>
-                  <SelectTrigger className="w-24 h-8 bg-transparent border-white/20 text-white text-sm">
+                  <SelectTrigger className="w-24 h-8 bg-transparent border-white/20 text-content text-sm">
                     <SelectValue placeholder="vs" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a1a1c] border-white/10">
