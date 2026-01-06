@@ -245,10 +245,10 @@ const ReviewPage = () => {
 
   if (loading && projects.length === 0) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#0a0a0b] text-white">
+      <div className="h-screen flex items-center justify-center bg-surface text-content">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-violet-400" />
-          <p>Loading Review Studio...</p>
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-brand-orange" />
+          <p>Loading The Screening Room...</p>
         </div>
       </div>
     );
@@ -266,21 +266,21 @@ const ReviewPage = () => {
       {selectedAsset ? (
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Top bar with asset info and version selector */}
-          <header className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-[#0d0d0e]">
+          <header className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-surface">
             <div className="flex items-center gap-3">
               <div className={cn(
                 'w-8 h-8 rounded-lg flex items-center justify-center',
-                selectedAsset.type === 'video' ? 'bg-blue-500/20' : 'bg-emerald-500/20'
+                selectedAsset.type === 'video' ? 'bg-brand-orange/20' : 'bg-brand-purple/20'
               )}>
                 {selectedAsset.type === 'video' ? (
-                  <Film className="w-4 h-4 text-blue-400" />
+                  <Film className="w-4 h-4 text-brand-orange" />
                 ) : (
-                  <ImageIcon className="w-4 h-4 text-emerald-400" />
+                  <ImageIcon className="w-4 h-4 text-brand-purple" />
                 )}
               </div>
               <div>
-                <h1 className="font-medium text-white">{selectedAsset.title}</h1>
-                <p className="text-xs text-white/50">
+                <h1 className="font-medium text-content">{selectedAsset.title}</h1>
+                <p className="text-xs text-content-muted">
                   {selectedProject?.name}
                 </p>
               </div>
@@ -289,18 +289,18 @@ const ReviewPage = () => {
             <div className="flex items-center gap-3">
               {/* Version indicator */}
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-white/50" />
+                <Layers className="w-4 h-4 text-content-muted" />
                 <Select value={selectedVersionId || ''} onValueChange={handleVersionChange}>
-                  <SelectTrigger className="w-28 h-9 bg-white/5 border-white/10 text-white">
+                  <SelectTrigger className="w-28 h-9 bg-surface-hover border-white/10 text-content">
                     <SelectValue placeholder="Version" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a1c] border-white/10">
+                  <SelectContent className="bg-surface-overlay border-white/10">
                     {versions.map(v => (
                       <SelectItem key={v.id} value={v.id}>
                         <div className="flex items-center gap-2">
                           <span>{v.label}</span>
                           {v.id === versions[versions.length - 1]?.id && (
-                            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 border-emerald-500/30 text-emerald-400">
+                            <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 border-status-success/30 text-status-success">
                               Latest
                             </Badge>
                           )}
@@ -312,7 +312,7 @@ const ReviewPage = () => {
               </div>
 
               {/* Comment count */}
-              <Badge variant="secondary" className="bg-violet-500/20 text-violet-300">
+              <Badge variant="secondary" className="bg-brand-purple/20 text-brand-purple-light">
                 {comments.length} comments
               </Badge>
             </div>
