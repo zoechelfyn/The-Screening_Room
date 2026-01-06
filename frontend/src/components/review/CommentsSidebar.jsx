@@ -269,31 +269,37 @@ const CommentsSidebar = ({
                   >
                     <div className="flex items-start gap-3">
                       <Avatar className="h-8 w-8 flex-shrink-0">
+                        {isInternalAuthor(comment.author) ? (
+                          <AvatarImage src={LOGO_URL} alt="Mohawk Media" className="object-cover" />
+                        ) : null}
                         <AvatarFallback className={cn(
                           'text-xs font-medium',
-                          comment.author.role === 'client' 
+                          isInternalAuthor(comment.author)
                             ? 'bg-brand-orange/20 text-brand-orange' 
-                            : 'bg-brand-purple/20 text-brand-purple-light'
+                            : 'bg-surface-hover text-content-muted'
                         )}>
-                          {getInitials(comment.author.name)}
+                          {isInternalAuthor(comment.author) ? 'MM' : <User className="w-4 h-4" />}
                         </AvatarFallback>
                       </Avatar>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-sm text-content">
-                            {comment.author.name}
+                          <span className={cn(
+                            "font-medium text-sm",
+                            isInternalAuthor(comment.author) ? "text-brand-orange" : "text-content"
+                          )}>
+                            {getDisplayName(comment.author)}
                           </span>
                           <Badge 
                             variant="outline" 
                             className={cn(
                               'text-[10px] px-1.5 py-0 h-4',
-                              comment.author.role === 'client'
+                              isInternalAuthor(comment.author)
                                 ? 'border-brand-orange/30 text-brand-orange'
-                                : 'border-brand-purple/30 text-brand-purple-light'
+                                : 'border-content-muted/30 text-content-muted'
                             )}
                           >
-                            {comment.author.role}
+                            {isInternalAuthor(comment.author) ? 'internal' : 'client'}
                           </Badge>
                           {comment.status === 'resolved' && (
                             <CheckCircle2 className="w-4 h-4 text-status-success" />
