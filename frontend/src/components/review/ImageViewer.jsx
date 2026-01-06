@@ -398,13 +398,13 @@ const ImageViewer = ({
                           >
                             <path
                               d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12z"
-                              fill={isHighlighted ? '#a78bfa' : comment.status === 'resolved' ? '#34d399' : '#fbbf24'}
+                              fill={isHighlighted ? '#7B4BA0' : comment.status === 'resolved' ? '#34d399' : '#F5A623'}
                             />
                             <circle cx="12" cy="12" r="4" fill="white" />
                           </svg>
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-xs bg-[#1a1a1c] border-white/10">
+                      <TooltipContent side="top" className="max-w-xs bg-surface-overlay border-white/10">
                         <p className="text-sm line-clamp-2">{comment.body}</p>
                       </TooltipContent>
                     </Tooltip>
