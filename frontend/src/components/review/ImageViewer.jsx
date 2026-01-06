@@ -417,7 +417,7 @@ const ImageViewer = ({
 
         {/* Add pin instruction overlay */}
         {isAddingPin && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-violet-500/90 rounded-full text-white text-sm">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-brand-purple/90 rounded-full text-content text-sm">
             Click anywhere on the image to add a comment pin
           </div>
         )}
