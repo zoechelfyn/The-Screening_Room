@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, Layers, Film, Image as ImageIcon } from 'lucide-react';
+import { Film, Image as ImageIcon, Layers, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -15,74 +15,146 @@ import VideoPlayer from '@/components/review/VideoPlayer';
 import ImageViewer from '@/components/review/ImageViewer';
 import CommentsSidebar from '@/components/review/CommentsSidebar';
 import {
-  mockProjects,
-  mockAssets,
-  getAssetById,
-  getVersionsByAssetId,
-  getCommentsByAssetAndVersion,
-  mockComments
-} from '@/data/mock';
+  projectsApi,
+  assetsApi,
+  versionsApi,
+  commentsApi,
+  repliesApi,
+  seedApi,
+  transformProject,
+  transformAsset,
+  transformVersion,
+  transformComment,
+} from '@/services/api';
 
 const ReviewPage = () => {
-  const [selectedProjectId, setSelectedProjectId] = useState(mockProjects[0]?.id);
+  const [projects, setProjects] = useState([]);
+  const [assets, setAssets] = useState([]);
+  const [versions, setVersions] = useState([]);
+  const [comments, setComments] = useState([]);
+  
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [selectedAssetId, setSelectedAssetId] = useState(null);
   const [selectedVersionId, setSelectedVersionId] = useState(null);
   const [highlightedCommentId, setHighlightedCommentId] = useState(null);
   const [newCommentAnchor, setNewCommentAnchor] = useState(null);
   const [compareMode, setCompareMode] = useState(false);
   const [compareVersionId, setCompareVersionId] = useState(null);
-  const [comments, setComments] = useState([]);
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   const seekToTimeRef = useRef(null);
 
-  const selectedAsset = selectedAssetId ? getAssetById(selectedAssetId) : null;
-  const versions = selectedAssetId ? getVersionsByAssetId(selectedAssetId) : [];
+  const selectedAsset = assets.find(a => a.id === selectedAssetId);
   const selectedVersion = versions.find(v => v.id === selectedVersionId);
+  const selectedProject = projects.find(p => p.id === selectedProjectId);
 
-  // Auto-select first asset when project changes
+  // Load projects on mount
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      const data = await projectsApi.list();
+      const transformed = data.map(transformProject);
+      setProjects(transformed);
+      
+      if (transformed.length > 0) {
+        setSelectedProjectId(transformed[0].id);
+      }
+    } catch (err) {
+      console.error('Failed to load projects:', err);
+      setError('Failed to load projects');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load assets when project changes
   useEffect(() => {
     if (selectedProjectId) {
-      const projectAssets = mockAssets.filter(a => a.projectId === selectedProjectId);
-      if (projectAssets.length > 0) {
-        setSelectedAssetId(projectAssets[0].id);
-      } else {
-        setSelectedAssetId(null);
-      }
+      loadAssets(selectedProjectId);
+    } else {
+      setAssets([]);
+      setSelectedAssetId(null);
     }
   }, [selectedProjectId]);
 
-  // Auto-select latest version when asset changes
+  const loadAssets = async (projectId) => {
+    try {
+      const data = await assetsApi.list(projectId);
+      const transformed = data.map(transformAsset);
+      setAssets(transformed);
+      
+      if (transformed.length > 0) {
+        setSelectedAssetId(transformed[0].id);
+      } else {
+        setSelectedAssetId(null);
+      }
+    } catch (err) {
+      console.error('Failed to load assets:', err);
+    }
+  };
+
+  // Load versions when asset changes
   useEffect(() => {
     if (selectedAssetId) {
-      const assetVersions = getVersionsByAssetId(selectedAssetId);
-      if (assetVersions.length > 0) {
+      loadVersions(selectedAssetId);
+    } else {
+      setVersions([]);
+      setSelectedVersionId(null);
+    }
+  }, [selectedAssetId]);
+
+  const loadVersions = async (assetId) => {
+    try {
+      const data = await versionsApi.list(assetId);
+      const transformed = data.map(transformVersion);
+      setVersions(transformed);
+      
+      if (transformed.length > 0) {
         // Select latest version
-        const latest = assetVersions[assetVersions.length - 1];
+        const latest = transformed[transformed.length - 1];
         setSelectedVersionId(latest.id);
         
-        // Reset compare mode
+        // Setup compare mode default
         setCompareMode(false);
-        if (assetVersions.length > 1) {
-          setCompareVersionId(assetVersions[assetVersions.length - 2].id);
+        if (transformed.length > 1) {
+          setCompareVersionId(transformed[transformed.length - 2].id);
         }
       } else {
         setSelectedVersionId(null);
       }
+      
       setHighlightedCommentId(null);
       setNewCommentAnchor(null);
+    } catch (err) {
+      console.error('Failed to load versions:', err);
     }
-  }, [selectedAssetId]);
+  };
 
   // Load comments when version changes
   useEffect(() => {
     if (selectedAssetId && selectedVersionId) {
-      const versionComments = getCommentsByAssetAndVersion(selectedAssetId, selectedVersionId);
-      setComments(versionComments);
-      setHighlightedCommentId(null);
+      loadComments(selectedAssetId, selectedVersionId);
     } else {
       setComments([]);
     }
   }, [selectedAssetId, selectedVersionId]);
+
+  const loadComments = async (assetId, versionId) => {
+    try {
+      const data = await commentsApi.list(assetId, versionId);
+      const transformed = data.map(transformComment);
+      setComments(transformed);
+      setHighlightedCommentId(null);
+    } catch (err) {
+      console.error('Failed to load comments:', err);
+    }
+  };
 
   const handleVersionChange = (versionId) => {
     setSelectedVersionId(versionId);
@@ -120,40 +192,72 @@ const ReviewPage = () => {
     });
   }, []);
 
-  const handleSubmitComment = useCallback((data) => {
-    // Create new comment (mock - in real app would call API)
-    const newComment = {
-      id: `c_${Date.now()}`,
-      assetId: selectedAssetId,
-      versionId: selectedVersionId,
-      author: { name: 'You', role: 'internal' },
-      createdAt: new Date().toISOString(),
-      status: 'open',
-      body: data.body,
-      anchor: data.anchor
-    };
-    
-    setComments(prev => [...prev, newComment]);
-    setNewCommentAnchor(null);
-    setHighlightedCommentId(newComment.id);
+  const handleSubmitComment = useCallback(async (data) => {
+    try {
+      const newComment = await commentsApi.create({
+        assetId: selectedAssetId,
+        versionId: selectedVersionId,
+        body: data.body,
+        anchor: data.anchor,
+        author: { name: 'You', role: 'internal' }
+      });
+      
+      const transformed = transformComment(newComment);
+      setComments(prev => [...prev, transformed]);
+      setNewCommentAnchor(null);
+      setHighlightedCommentId(transformed.id);
+    } catch (err) {
+      console.error('Failed to create comment:', err);
+    }
   }, [selectedAssetId, selectedVersionId]);
 
-  const handleResolveComment = useCallback((commentId) => {
-    setComments(prev => prev.map(c => 
-      c.id === commentId 
-        ? { ...c, status: c.status === 'resolved' ? 'open' : 'resolved' }
-        : c
-    ));
-  }, []);
+  const handleResolveComment = useCallback(async (commentId) => {
+    try {
+      const comment = comments.find(c => c.id === commentId);
+      const newStatus = comment.status === 'resolved' ? 'open' : 'resolved';
+      
+      await commentsApi.update(commentId, { status: newStatus });
+      
+      setComments(prev => prev.map(c => 
+        c.id === commentId ? { ...c, status: newStatus } : c
+      ));
+    } catch (err) {
+      console.error('Failed to update comment:', err);
+    }
+  }, [comments]);
 
   const handleToggleCompareMode = useCallback(() => {
     setCompareMode(prev => !prev);
   }, []);
 
+  const handleSeedDatabase = async () => {
+    try {
+      setLoading(true);
+      await seedApi.seed();
+      await loadProjects();
+    } catch (err) {
+      console.error('Failed to seed database:', err);
+      setError('Failed to seed database');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading && projects.length === 0) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-[#0a0a0b] text-white">
+        <div className="text-center">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-violet-400" />
+          <p>Loading Review Studio...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AppLayout
-      projects={mockProjects}
-      assets={mockAssets}
+      projects={projects}
+      assets={assets}
       selectedProjectId={selectedProjectId}
       selectedAssetId={selectedAssetId}
       onProjectSelect={setSelectedProjectId}
@@ -177,7 +281,7 @@ const ReviewPage = () => {
               <div>
                 <h1 className="font-medium text-white">{selectedAsset.title}</h1>
                 <p className="text-xs text-white/50">
-                  {mockProjects.find(p => p.id === selectedProjectId)?.name}
+                  {selectedProject?.name}
                 </p>
               </div>
             </div>
@@ -263,8 +367,30 @@ const ReviewPage = () => {
             <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
               <Film className="w-8 h-8 text-white/30" />
             </div>
-            <h2 className="text-xl font-medium text-white mb-2">Select an asset to review</h2>
-            <p className="text-white/50">Choose a video or image from the sidebar to start reviewing</p>
+            <h2 className="text-xl font-medium text-white mb-2">
+              {projects.length === 0 ? 'No projects found' : 'Select an asset to review'}
+            </h2>
+            <p className="text-white/50 mb-6">
+              {projects.length === 0 
+                ? 'Seed the database to get started with sample data'
+                : 'Choose a video or image from the sidebar to start reviewing'}
+            </p>
+            {projects.length === 0 && (
+              <Button 
+                onClick={handleSeedDatabase}
+                className="bg-violet-500 hover:bg-violet-600 text-white"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Seeding...
+                  </>
+                ) : (
+                  'Seed Sample Data'
+                )}
+              </Button>
+            )}
           </div>
         </div>
       )}
