@@ -1,0 +1,40 @@
+# Xenogenesis service map.
+# Rule: every model is a network service; tiers are ROLES in this file, not code.
+# Local-only phase: everything points at the RTX Pro box. When the Mac (M5, 128GB)
+# joins, repoint 'deep' and 'dispatch' at it — nothing else changes.
+
+[roles.deep]
+# Tier 1 — intelligent, latency-tolerant: derivation chains, critic pass, overnight queue.
+endpoint = "http://localhost:8000/v1"
+model = "QUASAR-QAT/Qwen3.8-27B-QUASAR-NVFP4"
+engine = "vllm"          # vllm | llamacpp | mlx (affects structured-output options)
+max_tokens = 8192
+temperature = 0.8
+# Later: move to the Mac (llama.cpp/MLX, engine = "llamacpp"). Keep prompts as one
+# stable prefix + small tail so its prompt cache absorbs the prefill cost.
+
+[roles.ideation]
+# Tier 2 — intelligent-ish and fast: the live back-and-forth. Same server as deep
+# for the local-only phase; split later if a faster MoE earns the slot.
+endpoint = "http://localhost:8000/v1"
+model = "QUASAR-QAT/Qwen3.8-27B-QUASAR-NVFP4"
+engine = "vllm"
+max_tokens = 2048
+temperature = 1.0
+
+[roles.dispatch]
+# Tier 3 — small and fast: prompt translation, slot filling, job running, queries.
+# Placeholder model; destined for the Mac alongside Whisper.
+endpoint = "http://localhost:8001/v1"
+model = "Qwen/Qwen3-8B"
+engine = "vllm"
+max_tokens = 1024
+temperature = 0.3
+
+[services]
+comfyui = "http://localhost:8188"   # Stage 3
+
+# Session modes (Stage 2 orchestrator presets — documented here, enforced there):
+#   ideation : ideation + dispatch + image model + small video resident
+#   render   : big video owns the card; ideation evicted; dispatch stays up
+#   deep     : deep owns the card (scheduled overnight, invokable by hand)

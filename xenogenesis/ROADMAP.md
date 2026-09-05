@@ -80,6 +80,38 @@ last, the tools are moving fast and nothing upstream depends on them), and a
 browsable front end for the catalogue. It's not lost on me that this repo is
 called The Screening Room — the catalogue wants a screen eventually.
 
+## Decisions since first draft (2026-09-05 session)
+
+- **Ledger schema is live** (`ledger.py`): single-sentence facts with
+  provenance tiers (`wellspring` > `chelfyn` > `accepted-riff` >
+  `machine-derived` — higher never yields to lower), status, `depends_on`
+  (retcons cascade to dependents as REVIEW flags), tags, plus open
+  questions, a retcon log, and a shared `universe` ledger for
+  cross-species facts. Wellspring-tier entries are entered by Chelfyn only.
+- **Tiers are roles in `config.toml`, not code**: `deep` (chains, critic,
+  overnight queue), `ideation` (the live back-and-forth), `dispatch`
+  (small/fast: prompt translation, slot filling, job running). Session
+  modes (ideation / render / deep) are orchestrator presets that start and
+  stop services; big video models get render mode to themselves, a small
+  fast video model stays resident for motion sketches.
+- **Hardware plan**: local-only first — everything on the RTX Pro
+  (Blackwell 96GB) via vLLM under WSL2, with `gpu-memory-utilization` caps
+  as the co-residency contract and prefix caching on. Prepared-for split:
+  the M5 Mac (128GB) later takes `deep` + `dispatch` + Whisper via
+  llama.cpp/MLX (vLLM doesn't run on Apple Silicon); its prefill weakness
+  is absorbed by stable-prefix prompts + prompt cache.
+- **Default tier-1/2 model**: `QUASAR-QAT/Qwen3.8-27B-QUASAR-NVFP4` —
+  NVFP4 runs natively on Blackwell tensor cores (~15GB weights), and QAT
+  keeps 4-bit quality honest. It's one config line if the bench disagrees.
+- **The riff loop is the primary interface** (Stage 3 UI): chat is the
+  ledger's editor; model replies carry proposed facts as accept-chips, one
+  tap commits with provenance `accepted-riff`. Panes: chat, easel (current
+  visualization), asset browser, ledger inspector. Every generated asset
+  records which facts it depended on, so retcons mark images stale.
+- **Hard vetoes are doorbells**: a zero-weight combination may not pass
+  silently — it rerolls, or triggers a justify-the-impossibility
+  conversation (see `canon/OCE-CAR-BOM` for what that produces).
+
 ## What to resist
 
 - Don't build the orchestrator before the chains prove out by hand (Stage 1
