@@ -111,6 +111,25 @@ called The Screening Room — the catalogue wants a screen eventually.
 - **Hard vetoes are doorbells**: a zero-weight combination may not pass
   silently — it rerolls, or triggers a justify-the-impossibility
   conversation (see `canon/OCE-CAR-BOM` for what that produces).
+- **Dream mode** (Stage 3, alongside the UI): while ideation runs, a
+  turbo-class image model (1–4 step distilled; sub-second at sketch
+  resolution) refreshes the easel continuously, steered by a small
+  "dream director" LLM (the dispatch model) watching the transcript tail
+  + ledger. It drives a **prompt loom** — a persistent slot structure
+  (subject / action / environment / mood / palette / camera) whose slots
+  hold atoms drawn from three pools: canon hooks (stable), recent
+  conversation (ephemeral), and a matrix-hook drift pool (serendipity).
+  The director emits atom-swap JSON diffs, never prose, so it keeps pace
+  with speech; a drift knob sets how far dreams may stray from what was
+  just said. Dreams are ephemeral and recorded nowhere — unless **pinned**,
+  which promotes one to a real asset with its loom state (seed, atoms,
+  sources) attached: reproducible, fact-traceable, and a seed brief for a
+  proper render. Unanchored flavor before a species has an approved
+  reference sheet (drifting looks is the point), anchored
+  (reference-conditioned) after. System-wide rule adopted with it:
+  **prompts are structured atom assemblies everywhere; strings are
+  rendered at the last moment** — the loom state is the asset-order
+  prompt payload.
 
 ## What to resist
 
