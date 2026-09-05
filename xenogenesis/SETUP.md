@@ -14,9 +14,10 @@ Stage 1 does not wait for infrastructure.
 
 ## 1. vLLM on the RTX box
 
-vLLM is Linux-first: on Windows run it inside **WSL2** (Ubuntu) or the
-official Docker image — not native Windows. With the CUDA driver installed
-on Windows, WSL2 sees the GPU automatically.
+**Follow `INSTALL-WSL.md`** — a phased, checkpoint-gated walkthrough
+(Windows driver → WSL2 → Docker GPU → tiny-model smoke test → the real
+model), with a symptom→phase debug map. `check_llm.py --role deep`
+verifies any configured role end-to-end. Summary of what it lands on:
 
 ```bash
 # inside WSL2 / Linux
