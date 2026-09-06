@@ -1,0 +1,179 @@
+{
+  "version": "0.1",
+  "notes": "Axes are rolled IN ORDER. Each option has a base weight 'w'. Options may declare 'tags'; later options may declare 'affinity' — a map of tag -> multiplier applied to their weight if that tag was picked up earlier. A multiplier of 0 forbids the combination. This is how the matrix stays coherent instead of producing random mush.",
+  "axes": [
+    {
+      "id": "world",
+      "label": "Homeworld",
+      "options": [
+        { "id": "ocean", "label": "Ocean world", "w": 3, "tags": ["aquatic", "no_fire"], "hook": "endless sea, no land to stand on, pressure and dark below" },
+        { "id": "desert", "label": "Desert world", "w": 3, "tags": ["arid"], "hook": "scarcity as the first law; water is currency, shade is architecture" },
+        { "id": "gas_giant", "label": "Gas giant", "w": 2, "tags": ["aerial", "no_fire", "no_ground"], "hook": "life in the cloud decks; nothing has ever touched a surface" },
+        { "id": "jungle_hothouse", "label": "Hothouse jungle world", "w": 3, "tags": ["fecund", "hot"], "hook": "evolution in fast-forward; everything is eating everything" },
+        { "id": "ice_rogue", "label": "Rogue ice world", "w": 2, "tags": ["dark", "cold"], "hook": "no sun; life huddles around geothermal veins under the ice" },
+        { "id": "tidally_locked", "label": "Tidally locked eyeball world", "w": 2, "tags": ["twilight"], "hook": "one eternal day-side furnace, one night-side tomb, life on the ring of dusk" },
+        { "id": "high_gravity", "label": "High-gravity super-earth", "w": 2, "tags": ["heavy"], "hook": "squat, strong, slow to fly, almost impossible to reach orbit" },
+        { "id": "low_g_moon", "label": "Low-gravity moon of a giant", "w": 2, "tags": ["light"], "hook": "a banded giant fills half the sky; leaping is nearly flying" },
+        { "id": "volcanic", "label": "Volcanic world", "w": 2, "tags": ["hot", "geothermal"], "hook": "the ground itself is unreliable; fire is a neighbour, not a tool" },
+        { "id": "shattered", "label": "Shattered world / belt", "w": 1, "tags": ["vacuum_adjacent"], "hook": "an archipelago of tumbling rock; the homeworld is a debris field" }
+      ]
+    },
+    {
+      "id": "substrate",
+      "label": "Biochemical substrate",
+      "options": [
+        { "id": "carbon_water", "label": "Carbon / water", "w": 6, "tags": ["organic"], "hook": "familiar chemistry, alien everything else" },
+        { "id": "carbon_ammonia", "label": "Carbon / ammonia (cryolife)", "w": 2, "tags": ["organic", "cryo"], "affinity": { "hot": 0, "cold": 3, "dark": 2 }, "hook": "slow cold chemistry; they think in decades and freeze at a touch of warmth" },
+        { "id": "silicon", "label": "Silicon-based", "w": 2, "tags": ["mineral"], "affinity": { "hot": 2, "arid": 2, "geothermal": 2, "aquatic": 0.3 }, "hook": "living stone and glass; they exhale sand, their dead become geology" },
+        { "id": "sulfur_thermal", "label": "Sulfur / thermovore", "w": 1, "tags": ["mineral"], "affinity": { "geothermal": 3, "hot": 2, "cold": 0.2 }, "hook": "they eat heat gradients; cities cluster on vents like flowers on a stem" },
+        { "id": "crystalline", "label": "Crystalline lattice life", "w": 1, "tags": ["mineral", "slow"], "affinity": { "cold": 2, "vacuum_adjacent": 2 }, "hook": "thought is a standing wave in a lattice; they grow rather than age" },
+        { "id": "plasma_energy", "label": "Energy-based (field life)", "w": 0.5, "tags": ["energy_being", "no_body"], "affinity": { "aerial": 2, "vacuum_adjacent": 2 }, "hook": "coherent fields, not flesh; their 'lineage' is what they were before they ascended" },
+        { "id": "post_biological", "label": "Post-biological (machine descendants)", "w": 0.5, "tags": ["mechanical"], "hook": "the builders are gone or transformed; the species IS its former tools" }
+      ]
+    },
+    {
+      "id": "lineage",
+      "label": "Ancestral lineage",
+      "notes": "For energy_being or mechanical substrates, read this axis as 'what they descended from BEFORE transformation'.",
+      "options": [
+        { "id": "avian", "label": "Avian analog", "w": 2, "tags": ["flier"], "affinity": { "aerial": 3, "heavy": 0.3, "aquatic": 0.5 }, "hook": "hollow-boned grace; culture obsessed with altitude, song, and sightlines" },
+        { "id": "cephalopod", "label": "Cephalopod analog", "w": 2, "tags": ["soft_bodied"], "affinity": { "aquatic": 4, "arid": 0.2 }, "hook": "distributed brains, skin that speaks in colour" },
+        { "id": "arthropod", "label": "Arthropod / insectoid", "w": 2, "tags": ["exoskeleton"], "affinity": { "fecund": 2, "heavy": 0.5 }, "hook": "moults as rites of passage; the shed shells of ancestors are sacred" },
+        { "id": "mammal_analog", "label": "Warm-blooded social animal", "w": 2, "tags": ["social_bond"], "hook": "grief, grooming, and grudges; the familiar made strange" },
+        { "id": "reptilian", "label": "Reptilian analog", "w": 2, "tags": ["cold_blooded"], "affinity": { "arid": 2, "cold": 0.3 }, "hook": "patience as physiology; they bask, they wait, they remember" },
+        { "id": "plant", "label": "Motile plant / photosynthetic", "w": 1, "tags": ["sessile_origin"], "affinity": { "fecund": 2, "dark": 0.2 }, "hook": "hunger is optional but light is politics" },
+        { "id": "fungal_colony", "label": "Fungal / colonial organism", "w": 1, "tags": ["collective"], "affinity": { "fecund": 2, "dark": 2 }, "hook": "the individual is a temporary fruiting body of something older" },
+        { "id": "filter_feeder", "label": "Sessile filter feeder that learned to move", "w": 1, "tags": ["slow"], "affinity": { "aquatic": 3 }, "hook": "they spent a million years watching before they ever acted" },
+        { "id": "burrower", "label": "Burrowing animal", "w": 1, "tags": ["subterranean"], "affinity": { "arid": 2, "cold": 2, "no_ground": 0 }, "hook": "the surface is myth; their history is measured in depth" },
+        { "id": "pack_predator", "label": "Pack predator", "w": 2, "tags": ["predator"], "hook": "cooperation sharpened by the hunt; loyalty and hierarchy in the blood" },
+        { "id": "herd_prey", "label": "Herd prey animal", "w": 2, "tags": ["prey_origin"], "hook": "a civilisation built by the watched; paranoia matured into philosophy" },
+        { "id": "eusocial_hive", "label": "Eusocial hive organism", "w": 1, "tags": ["collective", "hive"], "hook": "the question 'who are you?' has a plural answer" }
+      ]
+    },
+    {
+      "id": "convergence",
+      "label": "Body-plan pressure / convergence twist",
+      "options": [
+        { "id": "baseline_bilateral", "label": "Bilateral baseline (no twist)", "w": 5, "hook": "" },
+        { "id": "carcinization", "label": "Carcinization — everything turns to crab", "w": 1.5, "affinity": { "aquatic": 2, "soft_bodied": 2 }, "hook": "armour, claws, sideways gait; they know other species mock this, and do not care — the crab shape WINS" },
+        { "id": "radial", "label": "Radial symmetry", "w": 1, "affinity": { "aquatic": 2 }, "hook": "no front, no back, no facing; their doors, art and warfare assume attack from anywhere" },
+        { "id": "gasbag_floater", "label": "Buoyant floater / living airship", "w": 1, "affinity": { "aerial": 5, "heavy": 0, "aquatic": 0.5 }, "hook": "they drift; urgency is a foreign concept acquired late and badly" },
+        { "id": "modular_colonial", "label": "Modular / detachable colonial body", "w": 1, "affinity": { "collective": 3 }, "hook": "they lend limbs, swap organs, and vote by physical merger" },
+        { "id": "serpentine", "label": "Serpentine / limbless", "w": 1, "affinity": { "subterranean": 2, "heavy": 2 }, "hook": "tools shaped for a body that is one long muscle" },
+        { "id": "megafauna", "label": "Megafauna scale", "w": 1, "affinity": { "light": 2, "heavy": 0.3 }, "hook": "each individual is a walking village; population in the thousands, not billions" },
+        { "id": "swarm_micro", "label": "Micro-scale swarm", "w": 0.8, "affinity": { "collective": 3 }, "hook": "a 'person' is a cloud; handshakes are a merging" },
+        { "id": "amorphous", "label": "Amorphous / shape-fluid", "w": 0.8, "affinity": { "soft_bodied": 3, "exoskeleton": 0.2 }, "hook": "identity without fixed form; portraiture is considered hilarious" }
+      ]
+    },
+    {
+      "id": "sensorium",
+      "label": "Primary sensorium",
+      "options": [
+        { "id": "visual", "label": "Visual-primary (broadly familiar)", "w": 4, "hook": "" },
+        { "id": "echolocation", "label": "Echolocation", "w": 1.5, "affinity": { "aquatic": 3, "dark": 3 }, "hook": "privacy means silence; their cities are shaped like instruments" },
+        { "id": "electroreception", "label": "Electroreception", "w": 1, "affinity": { "aquatic": 3 }, "hook": "they feel heartbeats and lies; poker never developed" },
+        { "id": "magnetoreception", "label": "Magnetoreception", "w": 1, "affinity": { "vacuum_adjacent": 2 }, "hook": "the planet's field is a landscape; solar storms are weather, omens, holidays" },
+        { "id": "infrared", "label": "Thermal / infrared sight", "w": 1, "affinity": { "dark": 3, "cold": 2 }, "hook": "warmth is colour; the dead literally fade to grey" },
+        { "id": "chemical", "label": "Chemical / pheromonal", "w": 1, "affinity": { "hive": 3, "collective": 2 }, "hook": "mood is public; their libraries are scent archives that must be walked through" },
+        { "id": "seismic", "label": "Seismic / vibration", "w": 1, "affinity": { "subterranean": 3, "heavy": 2, "no_ground": 0 }, "hook": "speech travels through stone; strangers are felt long before they are met" },
+        { "id": "gestalt_network", "label": "Networked gestalt sense", "w": 0.7, "affinity": { "collective": 4, "hive": 3 }, "hook": "perception is pooled; an isolated individual is functionally blind" }
+      ]
+    },
+    {
+      "id": "age",
+      "label": "Civilizational age",
+      "options": [
+        { "id": "dawn", "label": "Dawn culture (pre-industrial)", "w": 2, "hook": "first cities, first writing, first wars worth naming" },
+        { "id": "young", "label": "Young and expansionist", "w": 3, "tags": ["young"], "hook": "loud, hungry, certain; a species-wide adolescence" },
+        { "id": "mature", "label": "Mature interstellar culture", "w": 3, "hook": "the wild edges institutionalised; greatness maintained rather than won" },
+        { "id": "ancient", "label": "Ancient and inward-turned", "w": 2, "tags": ["ancient"], "hook": "they solved their problems long ago and have been living in the answer ever since" },
+        { "id": "post_collapse", "label": "Post-collapse remnant", "w": 2, "tags": ["ruins"], "hook": "they live in the basement of their own golden age" },
+        { "id": "caretakers", "label": "Caretaker remnant of a departed race", "w": 1, "tags": ["ruins", "ancient"], "hook": "the masters ascended or died; the servants kept the lights on and became someone" },
+        { "id": "ascended_edge", "label": "On the edge of transcendence", "w": 0.7, "tags": ["ancient"], "hook": "half the species has already left; the ones who remain must explain why" }
+      ]
+    },
+    {
+      "id": "society",
+      "label": "Social organisation",
+      "options": [
+        { "id": "clan_honor", "label": "Clan and honor-debt", "w": 2, "hook": "every favour is a ledger entry; ancestry is jurisprudence" },
+        { "id": "hive_eusocial", "label": "Eusocial castes", "w": 1.5, "affinity": { "hive": 4, "collective": 3 }, "hook": "born to a role, and mostly at peace with it — the exceptions make the stories" },
+        { "id": "gerontocracy", "label": "Gerontocracy of the long-lived", "w": 1.5, "affinity": { "ancient": 2, "slow": 2 }, "hook": "the young wait centuries for a voice; some stop waiting" },
+        { "id": "consensus_web", "label": "Distributed consensus, no rulers", "w": 1.5, "affinity": { "collective": 2 }, "hook": "decisions percolate; outsiders can never find who is in charge, because no one is" },
+        { "id": "symbiotic_dyad", "label": "Obligate symbiotic pairs", "w": 1, "hook": "two species, one civilisation; every citizen is a partnership" },
+        { "id": "machine_regency", "label": "Machine-stewarded", "w": 1, "affinity": { "ruins": 2, "mechanical": 3 }, "hook": "an artificial steward governs by ancient mandate no one living wrote" },
+        { "id": "nomadic", "label": "Nomadic bands / fleets", "w": 1.5, "affinity": { "arid": 2, "vacuum_adjacent": 2, "no_ground": 2 }, "hook": "home is a route, not a place; wealth is what survives the journey" },
+        { "id": "memory_rule", "label": "Rule by the best rememberers", "w": 1, "hook": "status flows to those who carry the most past; forgetting is abdication" }
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technological character",
+      "options": [
+        { "id": "forged", "label": "Forged machines (fire and metal)", "w": 3, "affinity": { "no_fire": 0.1 }, "hook": "the classic path: smelt, forge, burn, launch" },
+        { "id": "grown", "label": "Grown biotech", "w": 2, "affinity": { "no_fire": 3, "organic": 1.5, "fecund": 2 }, "hook": "ships are bred, tools are cultivated, cities are pruned" },
+        { "id": "geothermal", "label": "Vent-smiths (geothermal metallurgy)", "w": 1, "affinity": { "geothermal": 4, "aquatic": 2 }, "hook": "industry chained to the planet's own furnaces; power is geography" },
+        { "id": "scavenger", "label": "Precursor-tech scavengers", "w": 1, "affinity": { "ruins": 4 }, "hook": "they operate what they cannot rebuild; every device is scripture and time-bomb" },
+        { "id": "ascetic", "label": "Deliberate refusers", "w": 0.8, "affinity": { "ancient": 2 }, "hook": "they had it all and put it down; the reason is the story" },
+        { "id": "field_craft", "label": "Field manipulation", "w": 0.7, "affinity": { "energy_being": 5, "mineral": 1.5 }, "hook": "no tools you could pick up; their engineering is done to space itself" }
+      ]
+    },
+    {
+      "id": "wound",
+      "label": "Defining wound / historical weight",
+      "options": [
+        { "id": "lost_homeworld", "label": "The homeworld is gone", "w": 2, "hook": "everything they build is a quotation of a place that no longer exists" },
+        { "id": "pyrrhic_war", "label": "A war won at ruinous cost", "w": 2, "hook": "victory hollowed them; the enemy is gone and so is what they were defending" },
+        { "id": "dying_star", "label": "Their sun is dying on a known schedule", "w": 1.5, "hook": "a civilisation-wide deadline; every institution bends around the departure date" },
+        { "id": "genome_plague", "label": "A flaw written into their own biology", "w": 1.5, "hook": "the enemy is inherited; every generation negotiates with it anew" },
+        { "id": "misread_artifact", "label": "A religion built on a misunderstood precursor artifact", "w": 1.5, "affinity": { "ruins": 2 }, "hook": "the object is real, the interpretation is theirs; both facts are dangerous" },
+        { "id": "were_livestock", "label": "They were once another species' property", "w": 1, "hook": "uplifted, kept, or farmed — freedom is recent and the scars are structural" },
+        { "id": "great_silence", "label": "They called into the dark for millennia; nothing answered", "w": 1.5, "hook": "first contact will break something in them, one way or the other" },
+        { "id": "self_betrayal", "label": "They did something unforgivable, and remember it", "w": 1, "hook": "the atrocity is theirs; the culture is an apparatus for carrying it" }
+      ]
+    },
+    {
+      "id": "values",
+      "label": "Cultural temperament",
+      "options": [
+        { "id": "curiosity", "label": "Curiosity above safety", "w": 2, "hook": "they will open the door, every time" },
+        { "id": "grief_centered", "label": "Grief as the organising emotion", "w": 1.5, "hook": "mourning is their art form, their calendar, and their diplomacy" },
+        { "id": "honor_debt", "label": "Obligation and reciprocity", "w": 2, "hook": "nothing is free and nothing is forgotten; generosity is a weapon" },
+        { "id": "aesthetic", "label": "Aesthetic obsession", "w": 1.5, "hook": "ugliness is the only sin; their warships are beautiful and this is not incidental" },
+        { "id": "humor", "label": "Humor as sacrament", "w": 1.5, "hook": "the joke is holy; their scriptures are funny on purpose and translators despair" },
+        { "id": "hospitality", "label": "Radical hospitality", "w": 1.5, "hook": "the guest is sacred even when the guest is a threat — especially then" },
+        { "id": "pragmatism", "label": "Ruthless pragmatism", "w": 1.5, "hook": "sentiment is a luxury tax they refuse to pay; they are honest about it, which is worse" },
+        { "id": "deep_patience", "label": "Deep-time patience", "w": 1.5, "affinity": { "ancient": 2, "slow": 3 }, "hook": "they plan in geological time; a grudge can outlive a mountain range" }
+      ]
+    },
+    {
+      "id": "aesthetic",
+      "label": "Material culture / visual signature",
+      "options": [
+        { "id": "chitin_coral", "label": "Iridescent chitin and grown coral", "w": 1.5, "affinity": { "aquatic": 2, "exoskeleton": 2 }, "hook": "cities grown, not built; surfaces that shimmer like beetle shells" },
+        { "id": "bone_hide", "label": "Bone, hide, and windworn textile", "w": 1.5, "affinity": { "arid": 2 }, "hook": "nomad elegance; nothing carried that doesn't earn its weight" },
+        { "id": "biolume_depths", "label": "Bioluminescent deep-sea palette", "w": 1.5, "affinity": { "aquatic": 3, "dark": 3 }, "hook": "black water, living light; language and lighting are the same medium" },
+        { "id": "membrane_silk", "label": "Membrane, silk, and tension structures", "w": 1.5, "affinity": { "aerial": 3, "light": 2 }, "hook": "architecture that weighs almost nothing; beauty measured in lift" },
+        { "id": "crystal_brutalism", "label": "Geometric crystal brutalism", "w": 1.5, "affinity": { "mineral": 3 }, "hook": "grown monoliths, refracted light, right angles found in nature nowhere else" },
+        { "id": "living_wood", "label": "Woven living wood and root", "w": 1.5, "affinity": { "fecund": 2, "sessile_origin": 3 }, "hook": "buildings that are still alive and occasionally have opinions" },
+        { "id": "glass_ash", "label": "Fused glass and ash-field ceramics", "w": 1, "affinity": { "hot": 2, "geothermal": 2 }, "hook": "beauty made from catastrophe's leftovers" },
+        { "id": "lacquer_ritual", "label": "Lacquer, ceramic, and ritual repair", "w": 1.5, "affinity": { "ancient": 2 }, "hook": "everything old is mended visibly in gold; age is the ornament" },
+        { "id": "salvage", "label": "Rust, salvage, and reverent patchwork", "w": 1, "affinity": { "ruins": 3 }, "hook": "the ancestors' machines worn as armour and altar" }
+      ]
+    },
+    {
+      "id": "twist",
+      "label": "Wildcard twist (usually none)",
+      "options": [
+        { "id": "none", "label": "No twist", "w": 16, "hook": "" },
+        { "id": "pooled_memory", "label": "Individuals are temporary; memory is pooled", "w": 1, "hook": "death is a formality; the archive is the person" },
+        { "id": "backwards_grief", "label": "They mourn befriendings, celebrate deaths", "w": 0.7, "hook": "their model of time or self inverts an emotional constant we assume is universal" },
+        { "id": "architecture_language", "label": "Their true language is architecture", "w": 0.8, "hook": "speech is small talk; to say something that matters, they build it" },
+        { "id": "they_fear_us", "label": "They find US terrifying", "w": 0.8, "hook": "some ordinary human trait — endurance, symbiotic gut flora, dreaming — is their horror-story material" },
+        { "id": "dreaming_caste", "label": "Their science is done asleep", "w": 0.7, "hook": "a caste of dreamers computes; waking life merely implements" },
+        { "id": "one_organism", "label": "The entire species is legally/biologically one organism", "w": 0.6, "hook": "war with them is surgery; diplomacy is neurochemistry" },
+        { "id": "voluntary_sunset", "label": "They have chosen extinction, calmly", "w": 0.5, "affinity": { "ancient": 2 }, "hook": "not despair — completion; visitors find this unbearable, they find it obvious" }
+      ]
+    }
+  ]
+}

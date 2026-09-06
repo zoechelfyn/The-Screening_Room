@@ -1,0 +1,83 @@
+{
+  "code": "OCE-CAR-BOM",
+  "name": "the Rocket-Breeders (working name)",
+  "seed": null,
+  "vector": {},
+  "facts": [
+    {
+      "id": "f0001",
+      "statement": "Combustion arrived as an organ: an aquatic bombardier-gland lineage that mixed binary propellants for defense a hundred million years before language.",
+      "provenance": "accepted-riff",
+      "status": "canon",
+      "depends_on": [],
+      "tags": [
+        "substrate",
+        "lineage",
+        "technology"
+      ],
+      "added": "2026-09-05"
+    },
+    {
+      "id": "f0002",
+      "statement": "With no fire and no forges, their rocketry is bred, not built: boosters are domesticated descendants of the ancestral defense gland.",
+      "provenance": "accepted-riff",
+      "status": "canon",
+      "depends_on": [
+        "f0001"
+      ],
+      "tags": [
+        "technology"
+      ],
+      "added": "2026-09-05"
+    },
+    {
+      "id": "f0003",
+      "statement": "Their word for 'first stage' is a kinship term; a failed launch is mourned as a death, because it is one.",
+      "provenance": "accepted-riff",
+      "status": "canon",
+      "depends_on": [
+        "f0002"
+      ],
+      "tags": [
+        "values",
+        "society"
+      ],
+      "added": "2026-09-05"
+    },
+    {
+      "id": "f0004",
+      "statement": "They launch from the open sea and crew flooded capsules; liquid immersion lets them endure accelerations that would kill a land vertebrate.",
+      "provenance": "accepted-riff",
+      "status": "canon",
+      "depends_on": [],
+      "tags": [
+        "world",
+        "technology"
+      ],
+      "added": "2026-09-05"
+    },
+    {
+      "id": "f0005",
+      "statement": "The handicap inverted: reaching orbit took them ten thousand years longer, and made them the best astronauts in the galaxy — a species with a chip on its shoulder and a right to it.",
+      "provenance": "accepted-riff",
+      "status": "canon",
+      "depends_on": [
+        "f0004"
+      ],
+      "tags": [
+        "wound",
+        "values"
+      ],
+      "added": "2026-09-05"
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "What is the taboo — what does a species whose engines are ancestors refuse to do with them, and who broke it?",
+      "added": "2026-09-05"
+    }
+  ],
+  "retcon_log": [],
+  "assets": [],
+  "created": "2026-09-05"
+}
