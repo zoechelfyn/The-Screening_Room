@@ -121,8 +121,15 @@ docker run -d --name qwen-deep --restart unless-stopped --gpus all \
   vllm/vllm-openai:latest \
   --model QUASAR-QAT/Qwen3.8-27B-QUASAR-NVFP4 \
   --gpu-memory-utilization 0.45 \
-  --enable-prefix-caching
+  --enable-prefix-caching \
+  --max-num-seqs 16
 ```
+
+`--max-num-seqs 16` matters: vLLM defaults to 1024 concurrent request
+slots (datacenter-scale), and this hybrid-Mamba architecture needs one
+cache block per slot — more than the 0.45 budget holds
+(`max_num_seqs (1024) exceeds available Mamba cache blocks`, hit
+2026-09-06). 16 is generous for a single-user machine.
 
 - `-d --restart unless-stopped` makes it a service: it survives closing
   the terminal and comes back after reboots (once Docker itself is up).
@@ -168,6 +175,7 @@ docker run -d --name qwen-dispatch --restart unless-stopped --gpus all \
 | `could not select device driver "nvidia"` | 1 — Docker GPU integration |
 | `no kernel image is available` | 2 — image too old for Blackwell; pull `latest` |
 | `RuntimeError: UVA is not available` | 2 — WSL2 + V2 runner; add `-e VLLM_WSL2_ENABLE_PIN_MEMORY=1` (fallback: `-e VLLM_USE_V2_MODEL_RUNNER=0`) |
+| `max_num_seqs (...) exceeds available Mamba cache blocks` | 3 — datacenter default; add `--max-num-seqs 16` |
 | Download crawls / load takes forever | 2 — HF cache on `/mnt/c`; move into WSL fs |
 | Container OOM-killed while loading | 0 — raise `memory=` in `.wslconfig` |
 | CUDA OOM at startup | 3 — lower `--gpu-memory-utilization` or `--max-model-len` |
