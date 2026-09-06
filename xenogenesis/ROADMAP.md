@@ -147,6 +147,27 @@ called The Screening Room — the catalogue wants a screen eventually.
   auto-nudges tokens until text contrast passes — themes own chrome,
   never legibility.
 
+- **"Create LoRA from this"** (Stage 4, needs asset browser + reference
+  workflow): one button promotes a look into visual canon by training a
+  LoRA. The button's real job is dataset assembly: gather the species'
+  approved assets, expand variety via the reference-conditioned workflow
+  (turnarounds, lighting, context), then let the multimodal deep model
+  cull off-model variants and write captions — captioning rule encoded in
+  the prompt: describe what should stay VARIABLE (pose, light,
+  background), omit what should be LEARNED (the subject). Dialog: time
+  estimate, suggested trigger word (derived from species code, checked
+  unique in a planetverse registry), scope, notify-when-done; job runs in
+  the render/overnight queue. On completion the trigger + LoRA reference
+  are written to the ledger and the prompt loom auto-injects them into
+  every future asset order for that species — dream mode starts dreaming
+  on-model with no user action. Planetverse strategy: a composable stack,
+  not a pile — universe *style* LoRA (low strength, best pinned art),
+  per-planet *world* LoRA (trained creature-free), per-species *subject*
+  LoRA (trained on neutral backgrounds), separate trigger namespaces.
+  LoRAs are assets with dataset manifest + fact provenance: retconned
+  facts stale the training images, which stale the LoRA, which offers a
+  retrain.
+
 ## What to resist
 
 - Don't build the orchestrator before the chains prove out by hand (Stage 1
