@@ -168,6 +168,35 @@ called The Screening Room — the catalogue wants a screen eventually.
   facts stale the training images, which stale the LoRA, which offers a
   retrain.
 
+## The flagship application (private — Chelfyn's, not part of any giveaway)
+
+**The Great Unknowing**: a ship built from the stern over hundreds of
+races' additions — newest grafts at the bow and outer skin, oldest at the
+core — an archaeological stratigraphy you can walk. The species pipeline
+is its supply chain; capture of a species ends with feeding the ship:
+
+- **Ship registry** in the universe ledger: each hull section is
+  `{species, era-of-joining, position, neighbors}` — the accretion
+  history as data. Later races route infrastructure through earlier
+  races' sections; anachronism is canon.
+- **`shipwright` chain** (fixed methodology, runs after canonization +
+  subject LoRA): derives a species' construction language — corridor
+  cross-section from body plan, materials and wear behavior, lighting,
+  door/junction conventions, prop vocabulary, exterior expression on the
+  hull silhouette.
+- **Construction kits** as the deliverable: tileable PBR corridor texture
+  sets (albedo generated, normal/roughness derived), trim sheets, prop
+  and greeble sheets, modular corridor/junction segments (image-to-3D at
+  Stage 4), all generated under the species LoRA. Engine-agnostic —
+  feeds game-engine level construction and virtual-production/filming
+  sets alike.
+- **Junctions are first-class**: the seam between two species' sections
+  is generated from the PAIR of ledgers (atmosphere/gravity/door-logic
+  translation; the relationship's history shapes the weld).
+- **Age is a parameter**: wear level per section driven by
+  era-of-joining — core kits render palimpsested and repaired, the newest
+  skin renders fresh. One knob from the registry.
+
 ## What to resist
 
 - Don't build the orchestrator before the chains prove out by hand (Stage 1
