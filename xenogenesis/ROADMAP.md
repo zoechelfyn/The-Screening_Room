@@ -131,6 +131,22 @@ called The Screening Room — the catalogue wants a screen eventually.
   rendered at the last moment** — the loom state is the asset-order
   prompt payload.
 
+- **Self-skinning UI** (Stage 3.5, after the UI and dream mode's loom
+  exist): a "skin from this" button on any image re-themes the whole
+  interface to match it. Because we author the UI, region masks are
+  exported from the layout itself — ground truth, no segmentation model.
+  Grade A (default): a fixed ComfyUI workflow generates a *theme plate*
+  matching the mask template; a token extractor samples it into a CSS
+  variables file + tileable textures — instant to apply, reversible, and
+  text is never generated so legibility can't melt. Grade B (hero
+  elements only): nine-slice panel frames and ornaments generated through
+  the masks. Theme prompt = source image + the species' aesthetic atoms
+  from the ledger. Skins are assets with full provenance (prompt, source,
+  seed, palette), living in the asset browser as a library; a species can
+  carry an official skin in canon. Hard guardrail: the extractor
+  auto-nudges tokens until text contrast passes — themes own chrome,
+  never legibility.
+
 ## What to resist
 
 - Don't build the orchestrator before the chains prove out by hand (Stage 1
