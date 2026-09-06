@@ -70,12 +70,20 @@ downloads in under a minute:
 mkdir -p ~/models/hf-cache
 
 docker run --rm --gpus all \
+  -e VLLM_WSL2_ENABLE_PIN_MEMORY=1 \
   -v ~/models/hf-cache:/root/.cache/huggingface \
   -p 8000:8000 \
   vllm/vllm-openai:latest \
   --model Qwen/Qwen3-0.6B \
   --gpu-memory-utilization 0.20
 ```
+
+`VLLM_WSL2_ENABLE_PIN_MEMORY=1` is required on WSL2: vLLM's V2 model
+runner needs UVA/pinned memory, which WSL2's CUDA layer doesn't provide
+by default (`RuntimeError: UVA is not available` at startup, hit on this
+machine 2026-09-06). If the error persists even with it, fall back to
+`-e VLLM_USE_V2_MODEL_RUNNER=0` (V1 runner) instead. Carry whichever
+flag works into every later `docker run`.
 
 Notes:
 - Keep the HF cache **inside the WSL filesystem** (`~/models/...`), never
@@ -107,6 +115,7 @@ works. Every later problem is now just "model or flags", never "stack".
 
 ```bash
 docker run -d --name qwen-deep --restart unless-stopped --gpus all \
+  -e VLLM_WSL2_ENABLE_PIN_MEMORY=1 \
   -v ~/models/hf-cache:/root/.cache/huggingface \
   -p 8000:8000 \
   vllm/vllm-openai:latest \
@@ -140,6 +149,7 @@ python3 run_chain.py run OCE-CAR-BOM spaceship --role deep
 Same pattern, second container, second port (matches `config.toml`):
 ```bash
 docker run -d --name qwen-dispatch --restart unless-stopped --gpus all \
+  -e VLLM_WSL2_ENABLE_PIN_MEMORY=1 \
   -v ~/models/hf-cache:/root/.cache/huggingface \
   -p 8001:8000 \
   vllm/vllm-openai:latest \
@@ -157,6 +167,7 @@ docker run -d --name qwen-dispatch --restart unless-stopped --gpus all \
 | `nvidia-smi` not found / no GPU in Ubuntu | 0 — Windows driver / `wsl --update` |
 | `could not select device driver "nvidia"` | 1 — Docker GPU integration |
 | `no kernel image is available` | 2 — image too old for Blackwell; pull `latest` |
+| `RuntimeError: UVA is not available` | 2 — WSL2 + V2 runner; add `-e VLLM_WSL2_ENABLE_PIN_MEMORY=1` (fallback: `-e VLLM_USE_V2_MODEL_RUNNER=0`) |
 | Download crawls / load takes forever | 2 — HF cache on `/mnt/c`; move into WSL fs |
 | Container OOM-killed while loading | 0 — raise `memory=` in `.wslconfig` |
 | CUDA OOM at startup | 3 — lower `--gpu-memory-utilization` or `--max-model-len` |
