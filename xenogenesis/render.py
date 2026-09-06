@@ -38,9 +38,12 @@ WORKFLOWS = HERE / "workflows"
 def wsl_host_ip():
     """The Windows host's IP as seen from WSL (the default gateway)."""
     import subprocess
-    out = subprocess.run(["ip", "route", "show", "default"],
-                         capture_output=True, text=True).stdout.split()
-    return out[out.index("via") + 1] if "via" in out else None
+    try:
+        out = subprocess.run(["ip", "route", "show", "default"],
+                             capture_output=True, text=True).stdout.split()
+        return out[out.index("via") + 1] if "via" in out else None
+    except (OSError, ValueError):
+        return None
 
 
 def resolve_comfy_url(url):
