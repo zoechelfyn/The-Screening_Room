@@ -195,6 +195,17 @@ called The Screening Room — the catalogue wants a screen eventually.
   are marked "framing variant" — outpainted edge content is never
   anatomy canon.
 
+- **Model dossiers & the prompt compiler**: canonical prompts are
+  model-agnostic intent; each image/video model's dialect lives in a
+  `models/<model>.style.md` dossier (idiom, dos/don'ts, negatives,
+  settings, trigger-word placement — the landing pad for per-model
+  prompting research). Workflow manifests declare their dialect via an
+  optional `"style"` field; from Stage 2 the dispatch tier compiles
+  structured intent + dossier into the final prompt string at render
+  time, so a model swap is a new dossier, never a canon rewrite. Dream
+  mode, outpainting, and LoRA captioning inherit the compiler. Dossiers
+  carry research provenance and a reviewed-against version.
+
 ## The flagship application (private — Chelfyn's, not part of any giveaway)
 
 **The Great Unknowing**: a ship built from the stern over hundreds of
