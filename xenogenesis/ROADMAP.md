@@ -184,6 +184,17 @@ called The Screening Room — the catalogue wants a screen eventually.
   Layers ordered stable→volatile so prefix caching keeps per-turn cost
   flat regardless of a species' age.
 
+- **1:1 masters, outpainted exports**: all images generate square (the
+  models' strongest aspect; uniform gallery), displayed in 1:1 boxes.
+  Download/capture offers 16:9 / 9:16 produced by outpaint workflows
+  (`outpaint_wide` / `outpaint_tall` — just more slot-manifest workflows)
+  that reuse the master's exact prompt from its provenance sidecar so
+  invented edges match the middle. Derivatives carry a `parent` asset
+  reference (staleness cascades); the overnight queue pre-outpaints
+  pinned assets so export is instant; derivatives of reference sheets
+  are marked "framing variant" — outpainted edge content is never
+  anatomy canon.
+
 ## The flagship application (private — Chelfyn's, not part of any giveaway)
 
 **The Great Unknowing**: a ship built from the stern over hundreds of
