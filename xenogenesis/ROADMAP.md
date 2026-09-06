@@ -168,6 +168,22 @@ called The Screening Room — the catalogue wants a screen eventually.
   facts stale the training images, which stale the LoRA, which offers a
   retrain.
 
+- **Session memory model** (Stage 2/3): each species' exploration is a
+  resumable chat with apparently infinite context, built from four
+  memory temperatures assembled per call rather than one giant window —
+  (1) *permanent*: the ledger as stable cached prefix; (2) *warm*: a
+  session digest of not-yet-canonized material, revised asynchronously by
+  the dispatch model, including a **declined list** of rejected ideas so
+  the model never re-pitches them; (3) the raw verbatim tail of recent
+  turns; (4) *recall on demand*: full per-species transcript archives
+  searched by dispatch when an old moment is referenced — unbounded, not
+  merely large. The accept-chip is the promotion path from warm to
+  permanent, so curation lightens the memory load by construction. On
+  session close / overnight, tier 1 reviews the transcript: flags missed
+  fact candidates, updates open questions, files a dated session summary.
+  Layers ordered stable→volatile so prefix caching keeps per-turn cost
+  flat regardless of a species' age.
+
 ## The flagship application (private — Chelfyn's, not part of any giveaway)
 
 **The Great Unknowing**: a ship built from the stern over hundreds of
