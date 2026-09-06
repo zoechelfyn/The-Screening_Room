@@ -35,6 +35,42 @@ HERE = Path(__file__).parent
 WORKFLOWS = HERE / "workflows"
 
 
+def wsl_host_ip():
+    """The Windows host's IP as seen from WSL (the default gateway)."""
+    import subprocess
+    out = subprocess.run(["ip", "route", "show", "default"],
+                         capture_output=True, text=True).stdout.split()
+    return out[out.index("via") + 1] if "via" in out else None
+
+
+def resolve_comfy_url(url):
+    """Use the configured URL, but if its host is unreachable and we're in
+    WSL, fall back to the current Windows-host IP (it changes across WSL
+    restarts — see the note in config.toml)."""
+    import urllib.error
+    import urllib.request as ur
+    try:
+        ur.urlopen(url.rstrip("/") + "/system_stats", timeout=5)
+        return url
+    except (urllib.error.URLError, OSError):
+        pass
+    host = wsl_host_ip()
+    if host:
+        from urllib.parse import urlparse
+        port = urlparse(url).port or 8188
+        fallback = f"http://{host}:{port}"
+        try:
+            ur.urlopen(fallback + "/system_stats", timeout=5)
+            print(f"NOTE: {url} unreachable; using current WSL host gateway "
+                  f"{fallback} (update config.toml to silence this)", file=sys.stderr)
+            return fallback
+        except (urllib.error.URLError, OSError):
+            pass
+    raise SystemExit(f"ComfyUI unreachable at {url}"
+                     + (f" and at gateway fallback http://{host}:..." if host else "")
+                     + " — is ComfyUI running? (E:\\ComfyUI, see workflows/README.md)")
+
+
 def load_workflow(name):
     wf_path = WORKFLOWS / f"{name}.json"
     mf_path = WORKFLOWS / f"{name}.manifest.json"
@@ -96,7 +132,7 @@ def main():
 
     with open(HERE / "config.toml", "rb") as f:
         cfg = tomllib.load(f)
-    client = ComfyClient(cfg["services"]["comfyui"])
+    client = ComfyClient(resolve_comfy_url(cfg["services"]["comfyui"]))
 
     workflow, manifest = load_workflow(args.workflow)
     seed = args.seed if args.seed is not None else random.randrange(2**31)
