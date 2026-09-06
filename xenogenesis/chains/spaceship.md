@@ -55,7 +55,16 @@ interesting part.
 
 ## Output
 
-After the reasoning, emit ONLY this JSON object:
+Answer in exactly two parts:
+
+**PART 1 — Derivation notes.** For each of the eight questions above, a
+short paragraph (three or four sentences, no more) stating your
+conclusion and the trait(s) it derives from. Be decisive — this is a
+designer's worksheet, not an essay, and the JSON below is the deliverable
+it feeds.
+
+**PART 2 — The result.** A single ```json fenced code block containing
+exactly this object, as the LAST thing in your reply:
 
 ```json
 {
