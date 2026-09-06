@@ -1,0 +1,6 @@
+{
+  "slots": {
+    "prompt": { "node": "6", "field": "text" },
+    "seed":   { "node": "3", "field": "seed" }
+  }
+}
